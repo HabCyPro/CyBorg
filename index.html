@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HabCy">
+<title>HabCy</title>
+<style>
+:root{--bg:#F6F7FB;--card:#fff;--ink:#1B1F3B;--mute:#6B7089;--line:#E3E5EF;--accent:#5B4BFF;--shadow:0 2px 10px rgba(27,31,59,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141F;--card:#1D2030;--ink:#F2F3FA;--mute:#9A9FBA;--line:#2C3047;--accent:#8C80FF;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12141F;--card:#1D2030;--ink:#F2F3FA;--mute:#9A9FBA;--line:#2C3047;--accent:#8C80FF;--shadow:none;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 ui-rounded,"SF Pro Rounded",-apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 120px}
+h1{font-size:32px;margin:8px 0 2px;letter-spacing:-.02em}
+h2{margin:0 0 10px}
+p{margin:0 0 12px}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+.sub,.mute{color:var(--mute);font-size:14px}
+.sub{margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin:0 0 12px;box-shadow:var(--shadow)}
+.row{display:flex;gap:14px;align-items:center}
+.grow{flex:1;min-width:0}
+.cr{font-size:14px;margin-top:4px;padding-left:14px;position:relative}
+.cr:before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.tick{width:48px;height:48px;flex:none;border-radius:50%;border:3px solid var(--c);background:transparent;color:transparent;font-size:24px;font-weight:700}
+.tick.on{background:var(--c);color:#fff}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:14px;padding:13px 18px;font-weight:700;min-height:48px}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.lnk{background:none;border:0;color:var(--accent);font-weight:600;padding:10px 6px}
+.lnk.bad{color:#E5484D}
+.acts2{display:flex;align-items:center;gap:8px;margin-top:8px}
+.mv{width:40px;height:40px;font-size:18px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;background:none;border:0;padding:13px 0;font-weight:700;color:var(--mute);border-radius:12px}
+nav button[aria-current=true]{color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:8px 0}
+.dh{text-align:center;font-size:13px;color:var(--mute);font-weight:700}
+.dh span{display:block;font-size:15px;color:var(--ink)}
+.dh.td span{color:var(--accent)}
+.c{width:40px;height:40px;justify-self:center;border-radius:50%;border:2px solid var(--line);background:transparent;color:transparent;font-weight:700;padding:0}
+.c.on{background:var(--c);border-color:var(--c);color:#fff}
+.c.miss{border-color:var(--c);opacity:.5}
+.c.fut{opacity:.4}
+.c.na{border-color:transparent}
+.c:disabled{cursor:default}
+.hr{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.ht{background:none;border:0;padding:4px 0;font-weight:700;text-align:left}
+.pc{font-weight:700;color:var(--mute)}
+.hl{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
+.st{font-size:12px;font-weight:700;color:var(--accent);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 9px;white-space:nowrap}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:12px;font-size:12px;color:var(--mute)}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.ch{width:100%;height:auto;display:block}
+.rl{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:13px}
+.rl i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.rt{fill:var(--ink)}
+.rm{fill:var(--mute)}
+.nav{display:flex;align-items:center;gap:8px;margin:6px 0 16px}
+.nav .grow{text-align:center}
+.ib{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:22px}
+.ib:disabled{opacity:.3}
+.bars{display:flex;gap:6px;height:130px}
+.bar{flex:1;display:flex;flex-direction:column;background:none;border:0;padding:0;gap:4px}
+.bt{flex:1;display:flex;align-items:flex-end}
+.bar i{display:block;width:100%;background:var(--accent);border-radius:8px 8px 3px 3px;min-height:3px;opacity:.7}
+.bar.sel i{opacity:1}
+.bar span{font-size:11px;color:var(--mute)}
+.empty{text-align:center;padding:36px 8px;color:var(--mute)}
+#bk{position:fixed;inset:0;background:rgba(0,0,0,.45)}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;max-height:90%;overflow:auto;margin:0 auto;background:var(--card);border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+label{display:block;font-weight:600;margin:0 0 12px}
+input,textarea,select{display:block;width:100%;margin-top:6px;font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{height:90px;font-size:13px}
+.fc{margin:0 0 8px}
+.acts{display:flex;gap:10px;margin-top:16px}
+.acts .btn{flex:1}
+.acts.col{flex-direction:column}
+.sec{margin:22px 0 8px;font-weight:700}
+.seg{display:flex;gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.seg button{flex:1;border:0;background:none;padding:11px 0;border-radius:10px;font-weight:700;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+:root[data-skin="nature"]{--bg:#D8F0BE;--card:#F3FBE8;--ink:#10301C;--mute:#4A6B52;--line:#B5DB96;--accent:#1B6B38;--shadow:0 2px 10px rgba(16,48,28,.08)}
+@media (prefers-color-scheme:dark){:root[data-skin="nature"]:not([data-theme="light"]){--bg:#0A1A11;--card:#11281A;--ink:#E3F2D8;--mute:#84AA8C;--line:#1E3C29;--accent:#8FD36B;--shadow:none}:root[data-skin="nature"]:not([data-theme="light"]) :is(.btn:not(.ghost):not([style]),.seg button[aria-pressed=true]){color:#0A1A11}}
+:root[data-skin="nature"][data-theme="dark"]{--bg:#0A1A11;--card:#11281A;--ink:#E3F2D8;--mute:#84AA8C;--line:#1E3C29;--accent:#8FD36B;--shadow:none}
+:root[data-skin="nature"][data-theme="dark"] :is(.btn:not(.ghost):not([style]),.seg button[aria-pressed=true]){color:#0A1A11}
+:root[data-skin="nature"] .card,:root[data-skin="nature"] .btn{border-radius:22px 8px 22px 8px}
+:root[data-skin="nature"] h1:before{content:"";display:inline-block;width:.75em;height:.75em;margin-right:.35em;background:var(--accent);border-radius:70% 0 70% 0;transform:rotate(-10deg)}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<main id="main"></main>
+<nav>
+<button data-act="tab" data-id="today">Today</button>
+<button data-act="tab" data-id="week">Week</button>
+<button data-act="tab" data-id="habits">Habits</button>
+</nav>
+<div id="bk" hidden data-act="close"></div>
+<div class="sheet" id="sh" hidden></div>
+<div id="toast" role="status"></div>
+<script>
+const KEY='habcy:v1',COLORS=['#FF5A5F','#FFB400','#00B894','#5B4BFF','#2D9CDB','#F368E0'];
+let S={habits:[],ticks:{}},V='today',OPEN=null,PEND=null;
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+let TH='auto';try{TH=localStorage.getItem('habcy:theme')||'auto'}catch(e){}
+let SK='default';try{SK=localStorage.getItem('habcy:skin')||'default'}catch(e){}
+const NAT={'#FF5A5F':'#E8604C','#FFB400':'#F2A33A','#00B894':'#17A398','#5B4BFF':'#B5539B','#2D9CDB':'#3A8FB7','#F368E0':'#4FA83D'};
+const hc=h=>(SK==='nature'&&NAT[h.color])||h.color;
+function applyTheme(){const r=document.documentElement;if(TH==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',TH);if(SK==='nature')r.setAttribute('data-skin','nature');else r.removeAttribute('data-skin')}
+applyTheme();
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const add=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};
+const mon=s=>add(s,-((parse(s).getDay()+6)%7));
+const T=()=>iso(new Date());
+const fmt=(s,o)=>parse(s).toLocaleDateString('en-GB',o||{weekday:'long',day:'numeric',month:'long'});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let WS=mon(T());
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Could not save on this device')}};
+function toast(m){const e=$('#toast');e.textContent=m;e.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='',2400)}
+const isArch=h=>h.off.length>0&&h.off[h.off.length-1][1]===null;
+const live=(h,d)=>d>=h.created&&!h.off.some(([a,b])=>d>=a&&(b===null||d<b));
+const crit=(h,d)=>{let v=h.crit[0];for(const x of h.crit)if(x.from<=d)v=x;return v.items};
+const ticked=(h,d)=>!!(S.ticks[h.id]&&S.ticks[h.id][d]);
+const editable=d=>d<=T()&&d>=add(mon(T()),-7);
+function wk(ws){const t=T();let tot=0,el=0;const rows=[];
+for(const h of S.habits){let n=0,c=0;const cells=[];
+for(let i=0;i<7;i++){const d=add(ws,i),lv=live(h,d),k=lv&&ticked(h,d);cells.push({d,lv,k});if(lv&&d<=t){n++;if(k)c++}}
+if(cells.some(x=>x.lv)){rows.push({h,cells,n,c});el+=n;tot+=c}}
+return{rows,pct:el?Math.round(tot/el*100):null}}
+function sheet(html){$('#sh').innerHTML=html;$('#sh').hidden=false;$('#bk').hidden=false}
+function close(){$('#sh').hidden=true;$('#bk').hidden=true;PEND=null}
+
+function vToday(){const t=T(),hs=S.habits.filter(h=>!isArch(h)),n=hs.filter(h=>ticked(h,t)).length;
+let o=`<h1>Today</h1><p class="sub">${fmt(t)}${hs.length?', '+n+' of '+hs.length+' done':''}</p>`;
+if(!hs.length)return o+`<div class="empty"><p>No habits yet. Add your first one.</p><button class="btn" data-act="edit">Add a habit</button></div>`;
+return o+hs.map(h=>`<div class="card row"><button class="tick${ticked(h,t)?' on':''}" style="--c:${hc(h)}" data-act="tick" data-id="${h.id}" data-d="${t}" aria-label="Mark ${esc(h.title)} done">✓</button><div class="grow"><b>${esc(h.title)}</b>${h.desc?`<div class="mute">${esc(h.desc)}</div>`:''}${crit(h,t).map(c=>`<div class="cr">${esc(c)}</div>`).join('')}</div></div>`).join('')}
+
+const barCol=p=>p===null?'var(--line)':p<40?'#E4572E':p<70?'#F2A93B':'#4FA35B';
+function streak(h,ref){let d=ref;if(d===T()&&!ticked(h,d))d=add(d,-1);let n=0;while(live(h,d)&&ticked(h,d)){n++;d=add(d,-1)}return n}
+function arcP(r,a0,a1){const p=a=>[(100+r*Math.sin(a)).toFixed(2),(100-r*Math.cos(a)).toFixed(2)];const [x0,y0]=p(a0),[x1,y1]=p(a1);return `M${x0} ${y0}A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1} ${y1}`}
+function ringCard(w){const R=w.rows,n=R.length,sl=2*Math.PI/n,g=n>1?.1:.002;
+const arcs=R.map(({h,n:e,c},i)=>{const a0=i*sl+g/2,a1=(i+1)*sl-g/2,f=e?c/e:0;
+return `<path d="${arcP(78,a0,a1)}" fill="none" stroke="${hc(h)}" stroke-opacity=".18" stroke-width="22"/>`+(f>0?`<path d="${arcP(78,a0,a0+(a1-a0)*f)}" fill="none" stroke="${hc(h)}" stroke-width="22"/>`:'')}).join('');
+return `<div class="sec">This week by habit</div><div class="card"><svg class="ch" style="max-width:240px;margin:0 auto" viewBox="0 0 200 200" role="img" aria-label="Completion ${w.pct===null?'not available':w.pct+'%'}">${arcs}<text class="rt" x="100" y="106" text-anchor="middle" font-size="34" font-weight="700">${w.pct===null?'-':w.pct+'%'}</text><text class="rm" x="100" y="128" text-anchor="middle" font-size="12">complete</text></svg><div class="rl">${R.map(({h,n:e,c})=>`<span><i style="background:${hc(h)}"></i>${esc(h.title)} ${e?Math.round(c/e*100)+'%':'-'}</span>`).join('')}</div></div>`}
+function lineCard(w){const t=T(),P=[];for(let i=0;i<7;i++){let e=0,c=0;for(const r of w.rows){const x=r.cells[i];if(x.lv&&x.d<=t){e++;if(x.k)c++}}P.push(e?Math.round(c/e*100):null)}
+const X=i=>30+i*43,Y=v=>115-v;let seg=[],cu=[];P.forEach((v,i)=>{if(v===null){if(cu.length)seg.push(cu);cu=[]}else cu.push([X(i),Y(v)])});if(cu.length)seg.push(cu);
+return `<div class="sec">Completion by day</div><div class="card"><svg class="ch" viewBox="0 0 320 150" role="img" aria-label="Daily completion for the week">`+[0,50,100].map(v=>`<line x1="30" x2="288" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text class="rm" x="24" y="${Y(v)+4}" text-anchor="end" font-size="10">${v}%</text>`).join('')+seg.map(s=>`<polyline points="${s.map(p=>p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`).join('')+P.map((v,i)=>v===null?'':`<circle cx="${X(i)}" cy="${Y(v)}" r="5" fill="var(--accent)"/>`).join('')+'MTWTFSS'.split('').map((l,i)=>`<text class="rm" x="${X(i)}" y="140" text-anchor="middle" font-size="11">${l}</text>`).join('')+`</svg></div>`}
+function vWeek(){const t=T(),cur=mon(t),w=wk(WS),end=add(WS,6);
+const first=S.habits.length?mon(S.habits.reduce((a,h)=>h.created<a?h.created:a,t)):cur;
+let o=`<h1>Week</h1><div class="nav"><button class="ib" data-act="wnav" data-d="-7" ${WS<=first?'disabled':''} aria-label="Previous week">‹</button><div class="grow"><b>${fmt(WS,{day:'numeric',month:'short'})} to ${fmt(end,{day:'numeric',month:'short'})}</b><div class="mute">${w.pct===null?'Nothing to measure yet':w.pct+'% complete'}${WS<add(cur,-7)?', read only':''}</div></div><button class="ib" data-act="wnav" data-d="7" ${WS>=cur?'disabled':''} aria-label="Next week">›</button></div>`;
+if(!w.rows.length)o+=`<div class="empty">No habits were active this week.</div>`;
+else{o+=`<div class="card"><div class="g">${[0,1,2,3,4,5,6].map(i=>{const d=add(WS,i);return `<div class="dh${d===t?' td':''}">${'MTWTFSS'[i]}<span>${parse(d).getDate()}</span></div>`}).join('')}</div>`;
+o+=w.rows.map(({h,cells,n,c})=>{const cd=end<t?end:t;
+return `<div class="hr"><div class="hl"><button class="ht" data-act="open" data-id="${h.id}">${esc(h.title)}${isArch(h)?' (archived)':''}</button>${streak(h,cd)?`<span class="st">${streak(h,cd)} day streak</span>`:''}</div><span class="pc">${n?Math.round(c/n*100)+'%':'-'}</span></div>`+
+(OPEN===h.id?`<div class="mute">${h.desc?esc(h.desc)+'<br>':''}${crit(h,cd).map(x=>'• '+esc(x)).join('<br>')||'No criteria set'}</div>`:'')+
+`<div class="g">${cells.map(x=>{const can=x.lv&&editable(x.d),cls=x.k?'on':!x.lv?'na':x.d>t?'fut':'miss';
+return `<button class="c ${cls}" style="--c:${hc(h)}" ${can?`data-act="tick" data-id="${h.id}" data-d="${x.d}"`:'disabled'} aria-label="${esc(h.title)} ${fmt(x.d)}">✓</button>`}).join('')}</div>`}).join('')+`</div>`}
+if(w.rows.length)o+=ringCard(w)+lineCard(w);
+const ws=[];for(let i=7;i>=0;i--){const x=add(cur,-7*i);if(x>=first)ws.push(x)}
+o+=`<div class="sec">Weekly completion</div><div class="card"><div class="bars">${ws.map(x=>{const p=wk(x).pct;return `<button class="bar${x===WS?' sel':''}" data-act="goto" data-d="${x}" aria-label="Week of ${fmt(x)}: ${p===null?'no data':p+'%'}"><div class="bt"><i style="height:${p||0}%;background:${barCol(p)}"></i></div><span>${parse(x).getDate()}/${parse(x).getMonth()+1}</span></button>`}).join('')}</div><div class="lg"><span><i style="background:#E4572E"></i>Under 40%</span><span><i style="background:#F2A93B"></i>40 to 69%</span><span><i style="background:#4FA35B"></i>70% and over</span></div></div>`;
+return o}
+
+function vHabits(){const act=S.habits.filter(h=>!isArch(h)),arc=S.habits.filter(isArch);
+let o=`<h1>Habits</h1><p class="sub">Add, edit or archive your habits</p><button class="btn" data-act="edit">Add a habit</button><div class="sec">Active</div>`;
+o+=act.length?act.map((h,i)=>`<div class="card"><div class="row"><i class="dot" style="background:${hc(h)}"></i><div class="grow"><b>${esc(h.title)}</b></div></div><div class="acts2"><button class="ib mv" data-act="move" data-id="${h.id}" data-d="-1" ${i===0?'disabled':''} aria-label="Move ${esc(h.title)} up">↑</button><button class="ib mv" data-act="move" data-id="${h.id}" data-d="1" ${i===act.length-1?'disabled':''} aria-label="Move ${esc(h.title)} down">↓</button><span class="grow"></span><button class="lnk" data-act="edit" data-id="${h.id}">Edit</button><button class="lnk" data-act="arch" data-id="${h.id}">Archive</button></div></div>`).join(''):`<p class="mute">No active habits.</p>`;
+if(arc.length)o+=`<div class="sec">Archived</div>`+arc.map(h=>`<div class="card row"><i class="dot" style="background:${hc(h)};opacity:.4"></i><div class="grow">${esc(h.title)}</div><button class="lnk" data-act="restore" data-id="${h.id}">Restore</button><button class="lnk bad" data-act="del" data-id="${h.id}">Delete</button></div>`).join('');
+return o+`<div class="sec">Appearance</div><div class="mute" style="margin-bottom:6px">Mode</div><div class="seg">${['auto','light','dark'].map(x=>`<button data-act="theme" data-id="${x}" aria-pressed="${TH===x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</div><div class="mute" style="margin:12px 0 6px">Colours</div><div class="seg">${['default','nature'].map(x=>`<button data-act="skin" data-id="${x}" aria-pressed="${SK===x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</div><div class="sec">Your data</div><button class="btn ghost" data-act="backup">Back up or restore</button><p class="mute" style="margin-top:10px">Everything is stored only on this device.</p>`}
+
+function render(){$('#main').innerHTML=({today:vToday,week:vWeek,habits:vHabits})[V]();document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.id===V))}
+const A={
+tab(id){V=id;if(id==='week')WS=mon(T());render();scrollTo(0,0)},
+tick(id,d){const h=S.habits.find(x=>x.id===id);if(!h||!editable(d)||!live(h,d))return;const m=S.ticks[id]=S.ticks[id]||{};if(m[d])delete m[d];else m[d]=1;save();render()},
+wnav(id,d){WS=add(WS,+d);OPEN=null;render()},
+goto(id,d){WS=d;OPEN=null;render()},
+open(id){OPEN=OPEN===id?null:id;render()},
+edit(id){const h=id&&S.habits.find(x=>x.id===id),it=h?crit(h,T()):[];
+sheet(`<h2>${h?'Edit habit':'New habit'}</h2><label>Title<input id="f-t" maxlength="60" value="${h?esc(h.title):''}"></label><label>Description <span id="dc" class="mute"></span><input id="f-d" maxlength="100" value="${h?esc(h.desc):''}" oninput="$('#dc').textContent=(100-this.value.length)+' left'"></label><div class="mute" style="margin-bottom:6px">Success criteria (up to 3, 60 characters each)</div>${[0,1,2].map(i=>`<input class="fc" maxlength="60" placeholder="e.g. Spend 10 minutes reading" value="${esc(it[i]||'')}">`).join('')}${h?'':`<label>Start date<select id="f-s">${[0,1,2,3,4,5,6,7].map(i=>`<option value="${add(T(),-i)}">${i===0?'Today':i===1?'Yesterday':fmt(add(T(),-i),{weekday:'short',day:'numeric',month:'short'})}</option>`).join('')}</select><span class="mute">Pick an earlier day to log what you have already done.</span></label>`}<div class="acts"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" data-act="save" data-id="${id||''}">Save</button></div>`);
+$('#dc').textContent=(100-$('#f-d').value.length)+' left'},
+save(id){const t=$('#f-t').value.trim(),d=$('#f-d').value.trim().slice(0,100),items=[...document.querySelectorAll('.fc')].map(i=>i.value.trim().slice(0,60)).filter(Boolean);
+if(!t){toast('Add a title');return}
+if(!id){const s0=($('#f-s')||{}).value,s=s0&&s0<=T()&&s0>=add(T(),-7)?s0:T();S.habits.push({id:uid(),title:t,desc:d,color:COLORS[S.habits.length%COLORS.length],created:s,off:[],crit:[{from:s,items}]});save();close();if(s<T()){V='week';WS=mon(T());toast('Added. Tap the days you have already done')}render();return}
+const h=S.habits.find(x=>x.id===id);
+if(JSON.stringify(items)===JSON.stringify(crit(h,T()))){h.title=t;h.desc=d;save();close();render();return}
+PEND={h,t,d,items};
+sheet(`<h2>Is this a correction or a change?</h2><p>A correction fixes the wording everywhere, including past weeks. A change starts today and past weeks keep the old wording.</p><div class="acts col"><button class="btn" data-act="apply" data-id="corr">Correction</button><button class="btn" data-act="apply" data-id="chg">Change from today</button><button class="btn ghost" data-act="close">Cancel</button></div>`)},
+apply(kind){const {h,t,d,items}=PEND;h.title=t;h.desc=d;
+if(kind==='corr'){(h.crit.filter(x=>x.from<=T()).pop()||h.crit[0]).items=items}
+else{const l=h.crit[h.crit.length-1];if(l.from===T())l.items=items;else h.crit.push({from:T(),items})}
+save();close();render()},
+arch(id){const h=S.habits.find(x=>x.id===id);sheet(`<h2>Archive ${esc(h.title)}?</h2><p>It leaves your Today list, but past weeks keep its history. You can restore it later.</p><div class="acts"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" data-act="doarch" data-id="${id}">Archive</button></div>`)},
+doarch(id){S.habits.find(x=>x.id===id).off.push([T(),null]);save();close();render()},
+restore(id){const h=S.habits.find(x=>x.id===id);h.off[h.off.length-1][1]=T();save();render();toast('Habit restored')},
+del(id){const h=S.habits.find(x=>x.id===id);sheet(`<h2>Delete ${esc(h.title)} for good?</h2><p>This removes the habit and all its history. It cannot be undone.</p><div class="acts"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" style="background:#E5484D" data-act="dodel" data-id="${id}">Delete forever</button></div>`)},
+dodel(id){S.habits=S.habits.filter(x=>x.id!==id);delete S.ticks[id];save();close();render()},
+backup(){sheet(`<h2>Back up or restore</h2><p class="mute">Copy this text and keep it somewhere safe, such as a private note. Paste it back below to restore.</p><textarea id="ex" readonly>${esc(JSON.stringify(S))}</textarea><div class="acts"><button class="btn" data-act="copy">Copy backup</button></div><div class="sec">Restore from a backup</div><textarea id="im" placeholder="Paste backup text here"></textarea><div class="acts"><button class="btn ghost" data-act="close">Close</button><button class="btn ghost" data-act="imp">Restore</button></div>`)},
+copy(){const e=$('#ex');e.select();let ok=false;try{ok=document.execCommand('copy')}catch(x){}try{navigator.clipboard&&navigator.clipboard.writeText(e.value);ok=true}catch(x){}toast(ok?'Backup copied':'Select the text and copy it')},
+imp(){let p;try{p=JSON.parse($('#im').value)}catch(e){}
+if(!p||!Array.isArray(p.habits)||typeof p.ticks!=='object'){toast('That does not look like a backup');return}
+p.habits.forEach(h=>{h.off=h.off||[]});PEND={p};
+sheet(`<h2>Replace your data?</h2><p>Restoring replaces everything currently in the app.</p><div class="acts"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" data-act="doimp">Replace</button></div>`)},
+doimp(){S=PEND.p;save();close();render();toast('Backup restored')},
+theme(id){TH=id;try{localStorage.setItem('habcy:theme',id)}catch(e){}applyTheme();render()},
+skin(id){SK=id;try{localStorage.setItem('habcy:skin',id)}catch(e){}applyTheme();render()},
+move(id,d){const hs=S.habits,i=hs.findIndex(x=>x.id===id),s=+d;let j=i+s;while(j>=0&&j<hs.length&&isArch(hs[j]))j+=s;if(i<0||j<0||j>=hs.length)return;[hs[i],hs[j]]=[hs[j],hs[i]];save();render()},
+close
+};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&A[b.dataset.act])A[b.dataset.act](b.dataset.id,b.dataset.d)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(V==='week'&&WS>mon(T()))WS=mon(T());render()}});
+render();
+</script>
+</body>
+</html>
